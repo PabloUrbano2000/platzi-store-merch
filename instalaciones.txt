@@ -1,0 +1,10 @@
+PARA PAYPAL:
+npm i react-paypal-button
+
+
+PARA GOOGLE API:
+npm i react-google-maps/api
+
+
+PARA SEO:
+npm i react-helmet

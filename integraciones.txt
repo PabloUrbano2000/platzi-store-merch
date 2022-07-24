@@ -1,0 +1,152 @@
+PARA INTEGRAR PAYPAL CON REACT
+
+- entrar a la ruta de
+https://developer.paypal.com/
+aca creamos nuestra cuenta
+- le damos en get api credentials y nos logueamos
+
+- En My Apps y Credentials creamos una App
+
+- una ves creada esta app le damos clic a la app recien creada y nos debe dar un
+clientId.
+
+- En la parte izquierda donde dice Dashboard, Sandbox, Mock
+en sandbox => accounts
+creamos una cuenta de prueba: elegimos que sea personal y de nuestro pais.
+
+una ves logrado eso, empezamos con la integración dentro del proyecto.
+
+
+
+PARA INTEGRAR GOOGLE MAPS CON REACT
+debemos registrarnos aca: https://developers.google.com/
+- deberemos crear un proyecto
+- seleccionamos el proyecto en el combo de la parte superior
+- En la sección de API: buscamos el servicio maps javascript API y lo habilitamos.
+- en credenciales: creamos una credencial de tipo Api Key o Clave Api.
+
+y es hora de integrarlo con le proyecto
+
+- NO OLVIDAR QUE PARA USAR TODAS LAS CARACTERISTICAS DE ESTA API HAY QUE PAGAR
+
+PARA CONSULTAR UNA LOCALIZACION ES:
+https://developers.google.com/maps/documentation/geocoding/get-api-key
+
+ingresamos la dirección y el api key generado anteriormente.
+
+
+
+
+PARA INTEGRAR GITHUB CON FIREBASE
+creamos en el proyecto una carpeta .github
+dentro otra carpeta llamada workflows
+y dentro un archivo con el nombre que deseamos [nombre].yml
+que contendrá la configuración de github con la cual se integrará con firebase
+
+LEER LA DOCUMENTACION SIGUIENTE:
+https://github.com/marketplace/actions/github-action-for-firebase
+
+Ejemplo para cuando la rama principal sea master:
+
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+PARA CUANDO SEA MAIN:
+name: Build and Deploy
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@main
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@main
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+
+PARA GENERAR EL FIREBASE_TOKEN en consola escribir:
+firebase login:ci
+
+esto nos abrirá nuestra cuenta de firebase y nos devolverá un token
+que en el repositorio del proyecto
+en settings => secrets => creamos una nuevo secreto e ingresamos:
+FIREBASE_TOKEN y con su valor [token devuelto]
+
+TENER EN CUENTA TENER INSTALADO LAS TOOLS DE FIREBASE A NIVEL GLOBAL DEL SISTEMA OPERATIVO
+
+
+
+
+PARA COMPRAR DOMINIOS:
+https://www.namecheap.com/
+
+PARA ADMINISTRAR LOS DOMINIOS COMPRADOS
+https://www.cloudflare.com/
+https://platzi.com/blog/que-es-cloudflare-cdn-ssl/
+https://platzi.com/blog/activar-el-cdn-de-cloudflare-en-tu-web/
+https://platzi.com/blog/mejorando-seguridad-web-cloudflare/
